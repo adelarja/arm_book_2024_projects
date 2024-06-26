@@ -48,9 +48,6 @@ int main()
 }
 
 void inputsInit() {
-    solenoidValve1.mode(PullDown);
-    solenoidValve2.mode(PullDown);
-    waterPump.mode(PullDown);
 }
 
 void outputsInit() {
