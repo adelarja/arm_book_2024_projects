@@ -10,6 +10,10 @@ DigitalOut solenoidValve1(D2);
 DigitalOut solenoidValve2(D3);
 DigitalOut waterPump(D4);
 
+DigitalOut ld1(LED1);
+DigitalOut ld2(LED2);
+DigitalOut ld3(LED3);
+
 AnalogIn levelSensor1(A0);
 AnalogIn levelSensor2(A1);
 AnalogIn levelSensor3(A2);
@@ -63,6 +67,8 @@ void getTanksWaterLevel() {
     levelSensor2ReadingsArray[levelSensorsSampleIndex] = levelSensor2.read();
     levelSensor3ReadingsArray[levelSensorsSampleIndex] = levelSensor3.read();
 
+    levelSensorsSampleIndex += 1;
+
     if (levelSensorsSampleIndex >= NUMBER_OF_AVG_SAMPLES) {
         levelSensorsSampleIndex = 0;
     }
@@ -74,7 +80,7 @@ void getTanksWaterLevel() {
     for (int i = 0; i < NUMBER_OF_AVG_SAMPLES; i++) {
         levelSensor1ReadingsSum += levelSensor1ReadingsArray[i];
         levelSensor2ReadingsSum += levelSensor2ReadingsArray[i];
-        levelSensor2ReadingsSum += levelSensor2ReadingsArray[i];
+        levelSensor3ReadingsSum += levelSensor3ReadingsArray[i];
     }
 
     levelSensor1ReadingsAverage = levelSensor1ReadingsSum / NUMBER_OF_AVG_SAMPLES;
@@ -85,19 +91,25 @@ void getTanksWaterLevel() {
 void manageWaterLevel() {
     if (levelSensor1ReadingsAverage < WATER_LEVEL_THRESHOLD) {
         waterPump = ON;
+        ld1 = ON;
     } else {
         waterPump = OFF;
+        ld1 = OFF;
     }
 
     if (levelSensor2ReadingsAverage < WATER_LEVEL_THRESHOLD) {
         solenoidValve1 = ON;
+        ld2 = ON;
     } else {
         solenoidValve1 = OFF;
+        ld2 = OFF;
     }
 
     if (levelSensor3ReadingsAverage < WATER_LEVEL_THRESHOLD) {
         solenoidValve2 = ON;
+        ld3 = ON;
     } else {
         solenoidValve2 = OFF;
+        ld3 = OFF;
     }
 }
