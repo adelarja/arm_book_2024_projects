@@ -18,6 +18,8 @@ AnalogIn levelSensor1(A0);
 AnalogIn levelSensor2(A1);
 AnalogIn levelSensor3(A2);
 
+UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
+
 float levelSensor1Reading = 0.0;
 float levelSensor1ReadingsAverage  = 0.0;
 float levelSensor1ReadingsSum = 0.0;
@@ -40,6 +42,8 @@ void inputsInit();
 void outputsInit();
 void getTanksWaterLevel();
 void manageWaterLevel();
+void availableCommands();
+void uartTask();
 
 int main()
 {
@@ -48,6 +52,7 @@ int main()
     while(true) {
         getTanksWaterLevel();
         manageWaterLevel();
+        uartTask();
     }
 }
 
@@ -112,4 +117,58 @@ void manageWaterLevel() {
         solenoidValve2 = OFF;
         ld3 = OFF;
     }
+}
+
+void uartTask()
+{
+    char receivedChar = '\0';
+    char str[100];
+    int stringLength;
+    if( uartUsb.readable() ) {
+        uartUsb.read( &receivedChar, 1 );
+        switch (receivedChar) {
+        case 'T':
+            uartUsb.write( "\n", 1);
+            sprintf ( str, "Tank 1 level %.2f\r\n", levelSensor1ReadingsAverage );
+            stringLength = strlen(str);
+            uartUsb.write( str, stringLength);
+
+            sprintf ( str, "Tank 2 level %.2f\r\n", levelSensor2ReadingsAverage );
+            stringLength = strlen(str);
+            uartUsb.write( str, stringLength);
+
+            sprintf ( str, "Tank 3 level %.2f\r\n", levelSensor3ReadingsAverage );
+            stringLength = strlen(str);
+            uartUsb.write( str, stringLength);
+            break;
+
+        case 'S':
+            uartUsb.write( "\n", 1);
+            if (waterPump || solenoidValve1 || solenoidValve2) {
+                if (waterPump)
+                    uartUsb.write( "Tank 1 is being filled.\r\n", 25);
+                
+                if (solenoidValve1)
+                    uartUsb.write( "Tank 2 is being filled.\r\n", 25);
+                
+                if (solenoidValve2)
+                    uartUsb.write( "Tank 3 is being filled.\r\n", 25);
+            } else {
+                uartUsb.write( "All tanks are full of water.\r\n", 30);
+            }
+            break;
+
+        default:
+            availableCommands();
+            break;
+
+        }
+    }
+}
+
+void availableCommands()
+{
+    uartUsb.write( "Available commands:\r\n", 21 );
+    uartUsb.write( "Press 'T' to get the water level in all tanks.\r\n", 48 );
+    uartUsb.write( "Press 'S' to get the solenoid valves and pump system state.\r\n", 61 );
 }
