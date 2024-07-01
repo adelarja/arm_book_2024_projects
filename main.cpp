@@ -6,7 +6,7 @@
 
 #define WATER_LEVEL_THRESHOLD 0.8
 #define NUMBER_OF_AVG_SAMPLES 100
-#define DEBOUNCE_TIME 30000
+#define DEBOUNCE_TIME 50000
 #define MAIN_DELAY 10
 #define MANUAL_MODE_BUTTON 0
 #define SOLENOID_VALVE_1_BUTTON 1
@@ -82,6 +82,7 @@ int main()
         if(manualMode == true) {
             manualLevelManagement();
         } else {
+            checkManualManagementSwitch();
             getTanksWaterLevel();
             manageWaterLevel();
         }
@@ -209,8 +210,9 @@ void availableCommands()
 void debounceButton(Button *button) {
     uint8_t reading = button->pin.read();
 
-    if(reading != button->lastState) {
+    if(reading != button->state) {
         button->debounceTimer.reset();
+        button->pressed = false;
     }
 
     if(button->debounceTimer.elapsed_time().count() >= DEBOUNCE_TIME) {
@@ -218,13 +220,14 @@ void debounceButton(Button *button) {
             button->state = reading;
         }
 
-        if(button->state == LOW) {
+        if(button->state == OFF && button->lastState == ON && button->pressed != true) {
             button->pressed = true;
         } else {
-            button->pressed = false;   
+            button->lastState = ON;
         }
+
+        button->debounceTimer.reset();
     }
-    button->lastState = reading;
 }
 
 void buttonsInit() {
@@ -243,13 +246,13 @@ void manualLevelManagement() {
         manualMode = !manualMode;
     } else if(buttons[SOLENOID_VALVE_1_BUTTON].pressed == true) {
         solenoidValve1 == 1 ? solenoidValve1 = 0 : solenoidValve1 = 1;
-        ld1 == 1 ? ld1 = 0: ld1 = 1;
+        ld1 == 1 ? ld1 = 0 : ld1 = 1;
     } else if(buttons[SOLENOID_VALVE_2_BUTTON].pressed == true) {
         solenoidValve2 == 1 ? solenoidValve2 = 0 : solenoidValve2 = 1;
-        ld2 == 1 ? ld2 = 0: ld2 = 1;
+        ld2 == 1 ? ld2 = 0 : ld2 = 1;
     } else if(buttons[WATER_PUMP_BUTTON].pressed == true) {
         waterPump == 1 ? waterPump = 0 : waterPump = 1;
-        ld3 == 1 ? ld3 = 0: ld3 = 1;
+        ld3 == 1 ? ld3 = 0 : ld3 = 1;
     }
 }
 
