@@ -19,13 +19,14 @@ typedef struct {
     int lastState;
     Timer debounceTimer;
     bool pressed;
+    bool processed;
 } Button;
 
 Button buttons[4] = {
-    {DigitalIn(D5), 1, 1, Timer(), false},
-    {DigitalIn(D6), 1, 1, Timer(), false},
-    {DigitalIn(D7), 1, 1, Timer(), false},
-    {DigitalIn(D8), 1, 1, Timer(), false},
+    {DigitalIn(D5), 1, 1, Timer(), false, false},
+    {DigitalIn(D6), 1, 1, Timer(), false, false},
+    {DigitalIn(D7), 1, 1, Timer(), false, false},
+    {DigitalIn(D8), 1, 1, Timer(), false, false},
 };
 
 DigitalOut solenoidValve1(D2);
@@ -210,24 +211,25 @@ void availableCommands()
 void debounceButton(Button *button) {
     uint8_t reading = button->pin.read();
 
-    if(reading != button->state) {
+    if(reading != button->lastState) {
         button->debounceTimer.reset();
-        button->pressed = false;
     }
 
     if(button->debounceTimer.elapsed_time().count() >= DEBOUNCE_TIME) {
         if(reading != button->state) {
             button->state = reading;
+            button->processed = false;
+            button->pressed = false;
         }
 
-        if(button->state == OFF && button->lastState == ON && button->pressed != true) {
+        if(button->state == OFF && button->processed == false) {
             button->pressed = true;
         } else {
-            button->lastState = ON;
+            button->pressed = false;
         }
-
-        button->debounceTimer.reset();
     }
+
+    button->lastState = reading;
 }
 
 void buttonsInit() {
@@ -244,20 +246,26 @@ void manualLevelManagement() {
 
     if(buttons[MANUAL_MODE_BUTTON].pressed == true) {
         manualMode = !manualMode;
+        buttons[MANUAL_MODE_BUTTON].processed = true;
     } else if(buttons[SOLENOID_VALVE_1_BUTTON].pressed == true) {
         solenoidValve1 == 1 ? solenoidValve1 = 0 : solenoidValve1 = 1;
         ld1 == 1 ? ld1 = 0 : ld1 = 1;
+        buttons[SOLENOID_VALVE_1_BUTTON].processed = true;
     } else if(buttons[SOLENOID_VALVE_2_BUTTON].pressed == true) {
         solenoidValve2 == 1 ? solenoidValve2 = 0 : solenoidValve2 = 1;
         ld2 == 1 ? ld2 = 0 : ld2 = 1;
+        buttons[SOLENOID_VALVE_2_BUTTON].processed = true;
     } else if(buttons[WATER_PUMP_BUTTON].pressed == true) {
         waterPump == 1 ? waterPump = 0 : waterPump = 1;
         ld3 == 1 ? ld3 = 0 : ld3 = 1;
+        buttons[WATER_PUMP_BUTTON].processed = true;
     }
 }
 
 void checkManualManagementSwitch() {
     debounceButton(&buttons[MANUAL_MODE_BUTTON]);
-    if(buttons[MANUAL_MODE_BUTTON].pressed == true)
+    if(buttons[MANUAL_MODE_BUTTON].pressed == true) {
         manualMode = !manualMode;
+        buttons[MANUAL_MODE_BUTTON].processed = true;
+    }       
 }
