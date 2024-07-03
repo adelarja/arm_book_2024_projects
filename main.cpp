@@ -12,6 +12,7 @@
 #define SOLENOID_VALVE_1_BUTTON 1
 #define SOLENOID_VALVE_2_BUTTON 2
 #define WATER_PUMP_BUTTON 3
+#define NUMBER_OF_TANKS 3
 
 typedef struct {
     DigitalIn pin;
@@ -22,6 +23,19 @@ typedef struct {
     bool processed;
 } Button;
 
+typedef struct {
+    AnalogIn levelSensor;
+    DigitalOut actuator; // Solenoid Valve or Water Pump
+    DigitalOut led;
+    uint8_t buttonIndex;
+    float levelSensorReading;
+    float levelSensorReadingsAverage;
+    float levelSensorReadingsSum;
+    float levelSensorReadingsArray[NUMBER_OF_AVG_SAMPLES];
+    float tankLevel;
+    float tankCapacity;
+} Tank;
+
 Button buttons[4] = {
     {DigitalIn(D5), 1, 1, Timer(), false, false},
     {DigitalIn(D6), 1, 1, Timer(), false, false},
@@ -29,37 +43,13 @@ Button buttons[4] = {
     {DigitalIn(D8), 1, 1, Timer(), false, false},
 };
 
-DigitalOut solenoidValve1(D2);
-DigitalOut solenoidValve2(D3);
-DigitalOut waterPump(D4);
-
-DigitalOut ld1(LED1);
-DigitalOut ld2(LED2);
-DigitalOut ld3(LED3);
-
-AnalogIn levelSensor1(A0);
-AnalogIn levelSensor2(A1);
-AnalogIn levelSensor3(A2);
+Tank tanks[NUMBER_OF_TANKS] = {
+    {AnalogIn(A0), DigitalOut(D2), DigitalOut(LED1), WATER_PUMP_BUTTON, 0, 0, 0, 0, 0, 0},
+    {AnalogIn(A1), DigitalOut(D3), DigitalOut(LED2), SOLENOID_VALVE_1_BUTTON, 0, 0, 0, 0, 0, 0},
+    {AnalogIn(A2), DigitalOut(D4), DigitalOut(LED3), SOLENOID_VALVE_2_BUTTON, 0, 0, 0, 0, 0, 0},
+};
 
 UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
-
-float levelSensor1Reading = 0.0;
-float levelSensor1ReadingsAverage  = 0.0;
-float levelSensor1ReadingsSum = 0.0;
-float levelSensor1ReadingsArray[NUMBER_OF_AVG_SAMPLES];
-float tank1Level = 0.0;
-
-float levelSensor2Reading = 0.0;
-float levelSensor2ReadingsAverage  = 0.0;
-float levelSensor2ReadingsSum = 0.0;
-float levelSensor2ReadingsArray[NUMBER_OF_AVG_SAMPLES];
-float tank2Level = 0.0;
-
-float levelSensor3Reading = 0.0;
-float levelSensor3ReadingsAverage  = 0.0;
-float levelSensor3ReadingsSum = 0.0;
-float levelSensor3ReadingsArray[NUMBER_OF_AVG_SAMPLES];
-float tank3Level = 0.0;
 
 bool manualMode = false;
 
@@ -95,17 +85,18 @@ void inputsInit() {
 }
 
 void outputsInit() {
-    solenoidValve1 = OFF;
-    solenoidValve2 = OFF;
-    waterPump = OFF;
+    for (int i = 0; i < NUMBER_OF_TANKS; i++) {
+        tanks[i].actuator = OFF;
+        tanks[i].led = OFF;
+    }
 }
 
 void getTanksWaterLevel() {
     static int levelSensorsSampleIndex = 0;
 
-    levelSensor1ReadingsArray[levelSensorsSampleIndex] = levelSensor1.read();
-    levelSensor2ReadingsArray[levelSensorsSampleIndex] = levelSensor2.read();
-    levelSensor3ReadingsArray[levelSensorsSampleIndex] = levelSensor3.read();
+    for (int i = 0; i < NUMBER_OF_TANKS; i++){
+        tanks[i].levelSensorReadingsArray[levelSensorsSampleIndex] = tanks[i].levelSensor.read();
+    }
 
     levelSensorsSampleIndex += 1;
 
@@ -113,44 +104,30 @@ void getTanksWaterLevel() {
         levelSensorsSampleIndex = 0;
     }
 
-    levelSensor1ReadingsSum = 0;
-    levelSensor2ReadingsSum = 0;
-    levelSensor3ReadingsSum = 0;
-
-    for (int i = 0; i < NUMBER_OF_AVG_SAMPLES; i++) {
-        levelSensor1ReadingsSum += levelSensor1ReadingsArray[i];
-        levelSensor2ReadingsSum += levelSensor2ReadingsArray[i];
-        levelSensor3ReadingsSum += levelSensor3ReadingsArray[i];
+    for(int i = 0; i < NUMBER_OF_TANKS; i++) {
+        tanks[i].levelSensorReadingsSum = 0;
     }
 
-    levelSensor1ReadingsAverage = levelSensor1ReadingsSum / NUMBER_OF_AVG_SAMPLES;
-    levelSensor2ReadingsAverage = levelSensor2ReadingsSum / NUMBER_OF_AVG_SAMPLES;
-    levelSensor3ReadingsAverage = levelSensor3ReadingsSum / NUMBER_OF_AVG_SAMPLES;
+    for(int i = 0; i < NUMBER_OF_TANKS; i++){
+        for (int j = 0; j < NUMBER_OF_AVG_SAMPLES; j++) {
+            tanks[i].levelSensorReadingsSum += tanks[i].levelSensorReadingsArray[j];
+        }
+    }
+    
+    for(int i = 0; i < NUMBER_OF_TANKS; i++) {
+        tanks[i].levelSensorReadingsAverage = tanks[i].levelSensorReadingsSum / NUMBER_OF_AVG_SAMPLES;
+    }
 }
 
 void manageWaterLevel() {
-    if (levelSensor1ReadingsAverage < WATER_LEVEL_THRESHOLD) {
-        waterPump = ON;
-        ld1 = ON;
-    } else {
-        waterPump = OFF;
-        ld1 = OFF;
-    }
-
-    if (levelSensor2ReadingsAverage < WATER_LEVEL_THRESHOLD) {
-        solenoidValve1 = ON;
-        ld2 = ON;
-    } else {
-        solenoidValve1 = OFF;
-        ld2 = OFF;
-    }
-
-    if (levelSensor3ReadingsAverage < WATER_LEVEL_THRESHOLD) {
-        solenoidValve2 = ON;
-        ld3 = ON;
-    } else {
-        solenoidValve2 = OFF;
-        ld3 = OFF;
+    for(int i = 0; i < NUMBER_OF_TANKS; i++) {
+        if (tanks[i].levelSensorReadingsAverage < WATER_LEVEL_THRESHOLD) {
+            tanks[i].actuator = ON;
+            tanks[i].led = ON;
+        } else {
+            tanks[i].actuator = OFF;
+            tanks[i].led = OFF;
+        }
     }
 }
 
@@ -164,29 +141,29 @@ void uartTask()
         switch (receivedChar) {
         case 'T':
             uartUsb.write( "\n", 1);
-            sprintf ( str, "Tank 1 level %.2f\r\n", levelSensor1ReadingsAverage );
+            sprintf ( str, "Tank 1 level %.2f\r\n", tanks[0].levelSensorReadingsAverage );
             stringLength = strlen(str);
             uartUsb.write( str, stringLength);
 
-            sprintf ( str, "Tank 2 level %.2f\r\n", levelSensor2ReadingsAverage );
+            sprintf ( str, "Tank 2 level %.2f\r\n", tanks[1].levelSensorReadingsAverage );
             stringLength = strlen(str);
             uartUsb.write( str, stringLength);
 
-            sprintf ( str, "Tank 3 level %.2f\r\n", levelSensor3ReadingsAverage );
+            sprintf ( str, "Tank 3 level %.2f\r\n", tanks[2].levelSensorReadingsAverage );
             stringLength = strlen(str);
             uartUsb.write( str, stringLength);
             break;
 
         case 'S':
             uartUsb.write( "\n", 1);
-            if (waterPump || solenoidValve1 || solenoidValve2) {
-                if (waterPump)
+            if (tanks[0].actuator || tanks[1].actuator || tanks[2].actuator) {
+                if (tanks[0].actuator)
                     uartUsb.write( "Tank 1 is being filled.\r\n", 25);
                 
-                if (solenoidValve1)
+                if (tanks[1].actuator)
                     uartUsb.write( "Tank 2 is being filled.\r\n", 25);
                 
-                if (solenoidValve2)
+                if (tanks[2].actuator)
                     uartUsb.write( "Tank 3 is being filled.\r\n", 25);
             } else {
                 uartUsb.write( "All tanks are full of water.\r\n", 30);
@@ -247,18 +224,14 @@ void manualLevelManagement() {
     if(buttons[MANUAL_MODE_BUTTON].pressed == true) {
         manualMode = !manualMode;
         buttons[MANUAL_MODE_BUTTON].processed = true;
-    } else if(buttons[SOLENOID_VALVE_1_BUTTON].pressed == true) {
-        solenoidValve1 == 1 ? solenoidValve1 = 0 : solenoidValve1 = 1;
-        ld1 == 1 ? ld1 = 0 : ld1 = 1;
-        buttons[SOLENOID_VALVE_1_BUTTON].processed = true;
-    } else if(buttons[SOLENOID_VALVE_2_BUTTON].pressed == true) {
-        solenoidValve2 == 1 ? solenoidValve2 = 0 : solenoidValve2 = 1;
-        ld2 == 1 ? ld2 = 0 : ld2 = 1;
-        buttons[SOLENOID_VALVE_2_BUTTON].processed = true;
-    } else if(buttons[WATER_PUMP_BUTTON].pressed == true) {
-        waterPump == 1 ? waterPump = 0 : waterPump = 1;
-        ld3 == 1 ? ld3 = 0 : ld3 = 1;
-        buttons[WATER_PUMP_BUTTON].processed = true;
+    } else {
+        for(int i = 0; i < NUMBER_OF_TANKS; i++) {
+            if(buttons[tanks[i].buttonIndex].pressed == true) {
+                tanks[i].actuator == 1 ? tanks[i].actuator = 0 : tanks[i].actuator = 1;
+                tanks[i].led == 1 ? tanks[i].led = 0 : tanks[i].led = 1;
+                buttons[tanks[i].buttonIndex].processed = true;
+            }
+        }
     }
 }
 
