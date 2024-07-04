@@ -1,0 +1,75 @@
+\hypertarget{structTank}{}\doxysection{Tank Struct Reference}
+\label{structTank}\index{Tank@{Tank}}
+
+
+Structure to hold tanks data.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Analog\+In \mbox{\hyperlink{structTank_a5bcd2b7ef1c7f2d18e5082e0692a4c2b}{level\+Sensor}}
+\item 
+Digital\+Out \mbox{\hyperlink{structTank_a7eebb47b108a0e0551c231155aa11d2e}{actuator}}
+\item 
+Digital\+Out \mbox{\hyperlink{structTank_a771ebd7a9c80d6a5cee2b1358aecfaf7}{led}}
+\item 
+\mbox{\Hypertarget{structTank_a3fce023277d6c2c68a95565991511735}\label{structTank_a3fce023277d6c2c68a95565991511735}} 
+uint8\+\_\+t {\bfseries button\+Index}
+\item 
+\mbox{\Hypertarget{structTank_a33e440ea71f2ceb59ee537f62ceb932b}\label{structTank_a33e440ea71f2ceb59ee537f62ceb932b}} 
+float {\bfseries level\+Sensor\+Reading}
+\item 
+\mbox{\Hypertarget{structTank_a6f1c6c1b6acd55a4d47d7b7b1fda2e8c}\label{structTank_a6f1c6c1b6acd55a4d47d7b7b1fda2e8c}} 
+float {\bfseries level\+Sensor\+Readings\+Average}
+\item 
+\mbox{\Hypertarget{structTank_aef3287ad210638027f224bc9ef082d94}\label{structTank_aef3287ad210638027f224bc9ef082d94}} 
+float {\bfseries level\+Sensor\+Readings\+Sum}
+\item 
+\mbox{\Hypertarget{structTank_ae081bb4936ca53785e44c743c7058680}\label{structTank_ae081bb4936ca53785e44c743c7058680}} 
+float {\bfseries level\+Sensor\+Readings\+Array} \mbox{[}\mbox{\hyperlink{main_8cpp_aea4d12715936bf0419a42ee8fd4fc36e}{NUMBER\+\_\+\+OF\+\_\+\+AVG\+\_\+\+SAMPLES}}\mbox{]}
+\item 
+\mbox{\Hypertarget{structTank_a9553269dba822f945f411a957bd1c196}\label{structTank_a9553269dba822f945f411a957bd1c196}} 
+float {\bfseries tank\+Level}
+\item 
+\mbox{\Hypertarget{structTank_a5fa12986b5848c66df46d45b3fd53866}\label{structTank_a5fa12986b5848c66df46d45b3fd53866}} 
+float {\bfseries tank\+Capacity}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to hold tanks data. 
+
+This struct holds information about the actuator that will be used to fill the tank (which digital output is used), which analog input is used for the water level sensor and which led will be used to indicate if the tank is being filled or not.
+
+For example, tank 1 is filled using water pump as the actuator. The led 1 is used to indicate to the user that the tank is being filled (and also for testing purposes in our case). The tank 2 is filled by gravity, opening the solenoid valve
+\begin{DoxyEnumerate}
+\item The led 2 is used to indicate to the user that the tank 2 is being filled.
+\end{DoxyEnumerate}
+
+Aditionally, some variables are defined to be used when calculating the average reading of the analog input for the level sensor. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structTank_a7eebb47b108a0e0551c231155aa11d2e}\label{structTank_a7eebb47b108a0e0551c231155aa11d2e}} 
+\index{Tank@{Tank}!actuator@{actuator}}
+\index{actuator@{actuator}!Tank@{Tank}}
+\doxysubsubsection{\texorpdfstring{actuator}{actuator}}
+{\footnotesize\ttfamily Digital\+Out Tank\+::actuator}
+
+The actuator used to fill the tank when the water level is below the threshold. \mbox{\Hypertarget{structTank_a771ebd7a9c80d6a5cee2b1358aecfaf7}\label{structTank_a771ebd7a9c80d6a5cee2b1358aecfaf7}} 
+\index{Tank@{Tank}!led@{led}}
+\index{led@{led}!Tank@{Tank}}
+\doxysubsubsection{\texorpdfstring{led}{led}}
+{\footnotesize\ttfamily Digital\+Out Tank\+::led}
+
+Led indicator used to know which tank is being filled. We\textquotesingle{}ve used the 3 leds of the NUCLEO board \mbox{\Hypertarget{structTank_a5bcd2b7ef1c7f2d18e5082e0692a4c2b}\label{structTank_a5bcd2b7ef1c7f2d18e5082e0692a4c2b}} 
+\index{Tank@{Tank}!levelSensor@{levelSensor}}
+\index{levelSensor@{levelSensor}!Tank@{Tank}}
+\doxysubsubsection{\texorpdfstring{levelSensor}{levelSensor}}
+{\footnotesize\ttfamily Analog\+In Tank\+::level\+Sensor}
+
+Analog input for the level sensor of the tank 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{main_8cpp}{main.\+cpp}}\end{DoxyCompactItemize}

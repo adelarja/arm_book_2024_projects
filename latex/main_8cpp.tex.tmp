@@ -1,0 +1,244 @@
+\hypertarget{main_8cpp}{}\doxysection{main.\+cpp File Reference}
+\label{main_8cpp}\index{main.cpp@{main.cpp}}
+
+
+A non modularized firmware for a water level management system.  
+
+
+{\ttfamily \#include \char`\"{}mbed.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}arm\+\_\+book\+\_\+lib.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+Include dependency graph for main.\+cpp\+:
+% FIG 0
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structButton}{Button}}
+\begin{DoxyCompactList}\small\item\em Structure to hold buttons data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structTank}{Tank}}
+\begin{DoxyCompactList}\small\item\em Structure to hold tanks data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8cpp_ae14acb6aac55d18e64e415d9e2bf8f01}{WATER\+\_\+\+LEVEL\+\_\+\+THRESHOLD}}~0.\+8
+\item 
+\#define \mbox{\hyperlink{main_8cpp_aea4d12715936bf0419a42ee8fd4fc36e}{NUMBER\+\_\+\+OF\+\_\+\+AVG\+\_\+\+SAMPLES}}~100
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a00aef9e8dd001a49f8717031d84b2c6c}{DEBOUNCE\+\_\+\+TIME}}~50000
+\item 
+\mbox{\Hypertarget{main_8cpp_ae1a38527e908beeb0fd600336e2f8bfb}\label{main_8cpp_ae1a38527e908beeb0fd600336e2f8bfb}} 
+\#define {\bfseries MAIN\+\_\+\+DELAY}~10
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a228d31ce7d948d88e43162685a23e220}{MANUAL\+\_\+\+MODE\+\_\+\+BUTTON}}~0
+\item 
+\#define \mbox{\hyperlink{main_8cpp_ad267adcc7755e3065441c1c504d4d430}{SOLENOID\+\_\+\+VALVE\+\_\+1\+\_\+\+BUTTON}}~1
+\item 
+\#define \mbox{\hyperlink{main_8cpp_ac7fd85ca6dc85ef9d46b3fc59fae73fb}{SOLENOID\+\_\+\+VALVE\+\_\+2\+\_\+\+BUTTON}}~2
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a4d2293f522a33da50f5f98ceeed77fa5}{WATER\+\_\+\+PUMP\+\_\+\+BUTTON}}~3
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a6e76690e043bae4351e8b1849710f165}{NUMBER\+\_\+\+OF\+\_\+\+TANKS}}~3
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_ad49ff21a38bf59699b141283d67444d2}\label{main_8cpp_ad49ff21a38bf59699b141283d67444d2}} 
+Unbuffered\+Serial {\bfseries uart\+Usb} (USBTX, USBRX, 115200)
+\item 
+\mbox{\Hypertarget{main_8cpp_a5225cb66d91a0766757acd370b60c6f7}\label{main_8cpp_a5225cb66d91a0766757acd370b60c6f7}} 
+void {\bfseries inputs\+Init} ()
+\item 
+\mbox{\Hypertarget{main_8cpp_ad612e2eed79b422051ceaa16df38c183}\label{main_8cpp_ad612e2eed79b422051ceaa16df38c183}} 
+void \mbox{\hyperlink{main_8cpp_ad612e2eed79b422051ceaa16df38c183}{outputs\+Init}} ()
+\begin{DoxyCompactList}\small\item\em Iterates over the tanks array and initiate the actuators and leds with the OFF value. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_afb9a51a29487781a8a640119b23cca72}{get\+Tanks\+Water\+Level}} ()
+\begin{DoxyCompactList}\small\item\em Function used to calculate the water level in the tanks, saving the information in the structs of the tanks array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_aa12b114a8ad4c895d5bb7a7f24ba0a61}{manage\+Water\+Level}} ()
+\begin{DoxyCompactList}\small\item\em This is the management system for the automatic water level management. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_a1cd9c02ae085896800c7704dfa969a24}\label{main_8cpp_a1cd9c02ae085896800c7704dfa969a24}} 
+void \mbox{\hyperlink{main_8cpp_a1cd9c02ae085896800c7704dfa969a24}{available\+Commands}} ()
+\begin{DoxyCompactList}\small\item\em Available commands for the serial GUI. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a7608cc2745aacf4015d26cd4ff79d4aa}{debounce\+Button}} (\mbox{\hyperlink{structButton}{Button}} $\ast$button)
+\begin{DoxyCompactList}\small\item\em Debounce function for the buttons. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a6d3fe55c02bba21088185ebbf7768240}{buttons\+Init}} ()
+\begin{DoxyCompactList}\small\item\em Init the buttons of the system as pull-\/ups. Init the timers for the buttons. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_af64eddc7833f2e6a4cf922e27a69e094}\label{main_8cpp_af64eddc7833f2e6a4cf922e27a69e094}} 
+void \mbox{\hyperlink{main_8cpp_af64eddc7833f2e6a4cf922e27a69e094}{uart\+Task}} ()
+\begin{DoxyCompactList}\small\item\em Serial GUI to ask the water level management system for information about the tanks. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_aca8858ecc85692928e8b4055e2900142}{manual\+Level\+Management}} ()
+\begin{DoxyCompactList}\small\item\em Function to check if an actuator button was pressed, or to check if the manual system was deactivated. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_a951c1e5e9010694cf5770eef8fc554bf}\label{main_8cpp_a951c1e5e9010694cf5770eef8fc554bf}} 
+void \mbox{\hyperlink{main_8cpp_a951c1e5e9010694cf5770eef8fc554bf}{check\+Manual\+Management\+Switch}} ()
+\begin{DoxyCompactList}\small\item\em Check if the manual operation was activated (when working in the automatic management operation) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+int {\bfseries main} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structButton}{Button}} \mbox{\hyperlink{main_8cpp_a22ecbc95a262a416dd0b096d5cbe1cb5}{buttons}} \mbox{[}4\mbox{]}
+\item 
+\mbox{\hyperlink{structTank}{Tank}} \mbox{\hyperlink{main_8cpp_a585e52f63ecc348980314158e681055f}{tanks}} \mbox{[}\mbox{\hyperlink{main_8cpp_a6e76690e043bae4351e8b1849710f165}{NUMBER\+\_\+\+OF\+\_\+\+TANKS}}\mbox{]}
+\item 
+\mbox{\Hypertarget{main_8cpp_ab127ce8f089f95d020f232f993fa8388}\label{main_8cpp_ab127ce8f089f95d020f232f993fa8388}} 
+bool {\bfseries manual\+Mode} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A non modularized firmware for a water level management system. 
+
+This file contains the function and data structures used for the system. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8cpp_a00aef9e8dd001a49f8717031d84b2c6c}\label{main_8cpp_a00aef9e8dd001a49f8717031d84b2c6c}} 
+\index{main.cpp@{main.cpp}!DEBOUNCE\_TIME@{DEBOUNCE\_TIME}}
+\index{DEBOUNCE\_TIME@{DEBOUNCE\_TIME}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{DEBOUNCE\_TIME}{DEBOUNCE\_TIME}}
+{\footnotesize\ttfamily \#define DEBOUNCE\+\_\+\+TIME~50000}
+
+Debounce time in microseconds \mbox{\Hypertarget{main_8cpp_a228d31ce7d948d88e43162685a23e220}\label{main_8cpp_a228d31ce7d948d88e43162685a23e220}} 
+\index{main.cpp@{main.cpp}!MANUAL\_MODE\_BUTTON@{MANUAL\_MODE\_BUTTON}}
+\index{MANUAL\_MODE\_BUTTON@{MANUAL\_MODE\_BUTTON}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{MANUAL\_MODE\_BUTTON}{MANUAL\_MODE\_BUTTON}}
+{\footnotesize\ttfamily \#define MANUAL\+\_\+\+MODE\+\_\+\+BUTTON~0}
+
+\mbox{\hyperlink{structButton}{Button}} to be used to switch between manual and automatic operation \mbox{\Hypertarget{main_8cpp_aea4d12715936bf0419a42ee8fd4fc36e}\label{main_8cpp_aea4d12715936bf0419a42ee8fd4fc36e}} 
+\index{main.cpp@{main.cpp}!NUMBER\_OF\_AVG\_SAMPLES@{NUMBER\_OF\_AVG\_SAMPLES}}
+\index{NUMBER\_OF\_AVG\_SAMPLES@{NUMBER\_OF\_AVG\_SAMPLES}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{NUMBER\_OF\_AVG\_SAMPLES}{NUMBER\_OF\_AVG\_SAMPLES}}
+{\footnotesize\ttfamily \#define NUMBER\+\_\+\+OF\+\_\+\+AVG\+\_\+\+SAMPLES~100}
+
+Number of samples to be used to calculate the analog sensor reading average \mbox{\Hypertarget{main_8cpp_a6e76690e043bae4351e8b1849710f165}\label{main_8cpp_a6e76690e043bae4351e8b1849710f165}} 
+\index{main.cpp@{main.cpp}!NUMBER\_OF\_TANKS@{NUMBER\_OF\_TANKS}}
+\index{NUMBER\_OF\_TANKS@{NUMBER\_OF\_TANKS}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{NUMBER\_OF\_TANKS}{NUMBER\_OF\_TANKS}}
+{\footnotesize\ttfamily \#define NUMBER\+\_\+\+OF\+\_\+\+TANKS~3}
+
+Number of tanks of the system \mbox{\Hypertarget{main_8cpp_ad267adcc7755e3065441c1c504d4d430}\label{main_8cpp_ad267adcc7755e3065441c1c504d4d430}} 
+\index{main.cpp@{main.cpp}!SOLENOID\_VALVE\_1\_BUTTON@{SOLENOID\_VALVE\_1\_BUTTON}}
+\index{SOLENOID\_VALVE\_1\_BUTTON@{SOLENOID\_VALVE\_1\_BUTTON}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{SOLENOID\_VALVE\_1\_BUTTON}{SOLENOID\_VALVE\_1\_BUTTON}}
+{\footnotesize\ttfamily \#define SOLENOID\+\_\+\+VALVE\+\_\+1\+\_\+\+BUTTON~1}
+
+\mbox{\hyperlink{structButton}{Button}} used to activate/deactivate the solenoid valve 1 \mbox{\Hypertarget{main_8cpp_ac7fd85ca6dc85ef9d46b3fc59fae73fb}\label{main_8cpp_ac7fd85ca6dc85ef9d46b3fc59fae73fb}} 
+\index{main.cpp@{main.cpp}!SOLENOID\_VALVE\_2\_BUTTON@{SOLENOID\_VALVE\_2\_BUTTON}}
+\index{SOLENOID\_VALVE\_2\_BUTTON@{SOLENOID\_VALVE\_2\_BUTTON}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{SOLENOID\_VALVE\_2\_BUTTON}{SOLENOID\_VALVE\_2\_BUTTON}}
+{\footnotesize\ttfamily \#define SOLENOID\+\_\+\+VALVE\+\_\+2\+\_\+\+BUTTON~2}
+
+\mbox{\hyperlink{structButton}{Button}} used to activate/deactivate the solenoid valve 2 \mbox{\Hypertarget{main_8cpp_ae14acb6aac55d18e64e415d9e2bf8f01}\label{main_8cpp_ae14acb6aac55d18e64e415d9e2bf8f01}} 
+\index{main.cpp@{main.cpp}!WATER\_LEVEL\_THRESHOLD@{WATER\_LEVEL\_THRESHOLD}}
+\index{WATER\_LEVEL\_THRESHOLD@{WATER\_LEVEL\_THRESHOLD}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{WATER\_LEVEL\_THRESHOLD}{WATER\_LEVEL\_THRESHOLD}}
+{\footnotesize\ttfamily \#define WATER\+\_\+\+LEVEL\+\_\+\+THRESHOLD~0.\+8}
+
+When the level sensor is below this value, the tank needs to be filled \mbox{\Hypertarget{main_8cpp_a4d2293f522a33da50f5f98ceeed77fa5}\label{main_8cpp_a4d2293f522a33da50f5f98ceeed77fa5}} 
+\index{main.cpp@{main.cpp}!WATER\_PUMP\_BUTTON@{WATER\_PUMP\_BUTTON}}
+\index{WATER\_PUMP\_BUTTON@{WATER\_PUMP\_BUTTON}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{WATER\_PUMP\_BUTTON}{WATER\_PUMP\_BUTTON}}
+{\footnotesize\ttfamily \#define WATER\+\_\+\+PUMP\+\_\+\+BUTTON~3}
+
+\mbox{\hyperlink{structButton}{Button}} used to activate/deactivate the water pump 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a6d3fe55c02bba21088185ebbf7768240}\label{main_8cpp_a6d3fe55c02bba21088185ebbf7768240}} 
+\index{main.cpp@{main.cpp}!buttonsInit@{buttonsInit}}
+\index{buttonsInit@{buttonsInit}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{buttonsInit()}{buttonsInit()}}
+{\footnotesize\ttfamily void buttons\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Init the buttons of the system as pull-\/ups. Init the timers for the buttons. 
+
+\begin{DoxyAttention}{Attention}
+The timers were not introduced in the course yet. I found these tools useful for the debounce function. 
+
+Nevertheless I\textquotesingle{}ll implement a delay in the main function, and check in each button if the debounce time 
+
+has ended. 
+\end{DoxyAttention}
+\mbox{\Hypertarget{main_8cpp_a7608cc2745aacf4015d26cd4ff79d4aa}\label{main_8cpp_a7608cc2745aacf4015d26cd4ff79d4aa}} 
+\index{main.cpp@{main.cpp}!debounceButton@{debounceButton}}
+\index{debounceButton@{debounceButton}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{debounceButton()}{debounceButton()}}
+{\footnotesize\ttfamily void debounce\+Button (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structButton}{Button}} $\ast$}]{button }\end{DoxyParamCaption})}
+
+
+
+Debounce function for the buttons. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]Change it for a FSM. I didn\textquotesingle{}t use it because it is out of the assignment scope, since FSM are a topic covered 
+
+in the next chapters. \end{DoxyRefDesc}
+\mbox{\Hypertarget{main_8cpp_afb9a51a29487781a8a640119b23cca72}\label{main_8cpp_afb9a51a29487781a8a640119b23cca72}} 
+\index{main.cpp@{main.cpp}!getTanksWaterLevel@{getTanksWaterLevel}}
+\index{getTanksWaterLevel@{getTanksWaterLevel}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{getTanksWaterLevel()}{getTanksWaterLevel()}}
+{\footnotesize\ttfamily void get\+Tanks\+Water\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function used to calculate the water level in the tanks, saving the information in the structs of the tanks array. 
+
+The sensors readings are saved into the level\+Sensors\+Readings\+Array. All the readings in the array are then averaged to obtain a more reliable analog measure.
+
+The arrays are filled replacing the older measures by the new ones. At the begining, when the array is empty, the measure is not accurate. In our case, the system gets stable once the array is filled (imperceptible time).
+
+The \mbox{\hyperlink{structTank}{Tank}} struct and the tanks array helps to avoid code repetition here. All the measures are saved in the \mbox{\hyperlink{structTank}{Tank}} structs initialized in the tanks array. \mbox{\Hypertarget{main_8cpp_aa12b114a8ad4c895d5bb7a7f24ba0a61}\label{main_8cpp_aa12b114a8ad4c895d5bb7a7f24ba0a61}} 
+\index{main.cpp@{main.cpp}!manageWaterLevel@{manageWaterLevel}}
+\index{manageWaterLevel@{manageWaterLevel}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{manageWaterLevel()}{manageWaterLevel()}}
+{\footnotesize\ttfamily void manage\+Water\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This is the management system for the automatic water level management. 
+
+Iterate over all tanks in the systems and check if the water level is below the water level threshold. In case it is, turn on the actuator and the led of the tank. In case it is not turn them off. \mbox{\Hypertarget{main_8cpp_aca8858ecc85692928e8b4055e2900142}\label{main_8cpp_aca8858ecc85692928e8b4055e2900142}} 
+\index{main.cpp@{main.cpp}!manualLevelManagement@{manualLevelManagement}}
+\index{manualLevelManagement@{manualLevelManagement}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{manualLevelManagement()}{manualLevelManagement()}}
+{\footnotesize\ttfamily void manual\+Level\+Management (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to check if an actuator button was pressed, or to check if the manual system was deactivated. 
+
+If a button of the actuator was pressed, we used that information to activate/deactivate the actuator and the led. Once this happens, the processed flag of the button is activated and the debounce function prevents re-\/entering the conditional on line 309 (we ensure that the program enters the conditional only once per button press). 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8cpp_a22ecbc95a262a416dd0b096d5cbe1cb5}\label{main_8cpp_a22ecbc95a262a416dd0b096d5cbe1cb5}} 
+\index{main.cpp@{main.cpp}!buttons@{buttons}}
+\index{buttons@{buttons}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{buttons}{buttons}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structButton}{Button}} buttons\mbox{[}4\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{DigitalIn(D5), 1, 1, Timer(), \textcolor{keyword}{false}, \textcolor{keyword}{false}\},}
+\DoxyCodeLine{    \{DigitalIn(D6), 1, 1, Timer(), \textcolor{keyword}{false}, \textcolor{keyword}{false}\},}
+\DoxyCodeLine{    \{DigitalIn(D7), 1, 1, Timer(), \textcolor{keyword}{false}, \textcolor{keyword}{false}\},}
+\DoxyCodeLine{    \{DigitalIn(D8), 1, 1, Timer(), \textcolor{keyword}{false}, \textcolor{keyword}{false}\},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+Array of buttons. Helps avoiding code repetition and handling the button events in an easy way. \mbox{\Hypertarget{main_8cpp_a585e52f63ecc348980314158e681055f}\label{main_8cpp_a585e52f63ecc348980314158e681055f}} 
+\index{main.cpp@{main.cpp}!tanks@{tanks}}
+\index{tanks@{tanks}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{tanks}{tanks}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTank}{Tank}} tanks\mbox{[}\mbox{\hyperlink{main_8cpp_a6e76690e043bae4351e8b1849710f165}{NUMBER\+\_\+\+OF\+\_\+\+TANKS}}\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{AnalogIn(A0), DigitalOut(D2), DigitalOut(LED1), \mbox{\hyperlink{main_8cpp_a4d2293f522a33da50f5f98ceeed77fa5}{WATER\_PUMP\_BUTTON}}, 0, 0, 0, 0, 0, 0\},}
+\DoxyCodeLine{    \{AnalogIn(A1), DigitalOut(D3), DigitalOut(LED2), \mbox{\hyperlink{main_8cpp_ad267adcc7755e3065441c1c504d4d430}{SOLENOID\_VALVE\_1\_BUTTON}}, 0, 0, 0, 0, 0, 0\},}
+\DoxyCodeLine{    \{AnalogIn(A2), DigitalOut(D4), DigitalOut(LED3), \mbox{\hyperlink{main_8cpp_ac7fd85ca6dc85ef9d46b3fc59fae73fb}{SOLENOID\_VALVE\_2\_BUTTON}}, 0, 0, 0, 0, 0, 0\},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+Array of tanks. Helps avoiding code repetition and managing the level sensors readings and actuators activation. 
