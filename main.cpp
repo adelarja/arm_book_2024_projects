@@ -294,7 +294,7 @@ void buttonsInit() {
 *
 * If a button of the actuator was pressed, we used that information to activate/deactivate the actuator and the led.
 * Once this happens, the processed flag of the button is activated and the debounce function prevents re-entering
-* the conditional on line 310 (we ensure that the program enters the conditional only once per button press). 
+* the conditional on line 309 (we ensure that the program enters the conditional only once per button press). 
 */
 void manualLevelManagement() {
     for(int i = 0; i < 4; i++) {
