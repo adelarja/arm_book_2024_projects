@@ -34,6 +34,8 @@ To complete practical work 1, the following peripherals will be used:
 * LED 2: Indicates the status of solenoid valve 2.
 * LED 3: Indicates the status of the pumping system.
 
+![Box diagram of the system](./diagrams/box_diagram.png)
+
 ## Note
 
 Since the knowledge of this topic is found in chapter 3 of the book, I've implemented a debounce function without using Finite State Machines (FSM).
