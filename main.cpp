@@ -174,7 +174,6 @@ void getTanksWaterLevel() {
 * In case it is, turn on the actuator and the led of the tank. In case it is not turn them off.
 */
 void manageWaterLevel() {
-    /
     for(int i = 0; i < NUMBER_OF_TANKS; i++) {
         if (tanks[i].levelSensorReadingsAverage < WATER_LEVEL_THRESHOLD) {
             tanks[i].actuator = ON;
