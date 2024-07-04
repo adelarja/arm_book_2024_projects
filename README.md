@@ -10,4 +10,30 @@ Tank 2 is supplied by gravity from tank 1. When the water level in tank 2 is bel
 
 Tank 3 is supplied by gravity from tank 2. When the water level in tank 3 is below the minimum level (fill threshold), a solenoid valve opens in tank 2, allowing tank 3 to be filled up to its fill level.
 
+Below you can find a diagram of the system.
+
+![Tanks diagram](./diagrams/tanks_diagram.png)
+
 The system can operate in manual or automatic mode (in manual mode, the user is responsible for pressing buttons to activate/deactivate the pumping system and solenoid valves).
+
+The user can request the following information via the serial port:
+
+* Water level of the tanks.
+* Status of the pumping system (ON/OFF).
+* Status of the solenoid valves.
+
+To complete practical work 1, the following peripherals will be used:
+
+* POTENTIOMETER 1: Will be used to represent the water level of tank 1.
+* POTENTIOMETER 2: Will be used to represent the water level of tank 2.
+* POTENTIOMETER 3: Will be used to represent the water level of tank 3.
+* RELAY 1: Activation/deactivation of valve 1.
+* RELAY 2: Activation/deactivation of valve 2.
+* RELAY 3: Activation/deactivation of the pumping system.
+* LED 1: Indicates the status of solenoid valve 1.
+* LED 2: Indicates the status of solenoid valve 2.
+* LED 3: Indicates the status of the pumping system.
+
+## Note
+
+Since the knowledge of this topic is found in chapter 3 of the book, I've implemented a debounce function without using Finite State Machines (FSM).
