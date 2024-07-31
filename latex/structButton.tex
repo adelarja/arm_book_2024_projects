@@ -1,0 +1,73 @@
+\hypertarget{structButton}{}\doxysection{Button Struct Reference}
+\label{structButton}\index{Button@{Button}}
+
+
+Structure to hold buttons data.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Digital\+In \mbox{\hyperlink{structButton_a191b6e64f8845370d7b02ce0436b0b47}{pin}}
+\item 
+int \mbox{\hyperlink{structButton_a5d20912c881b34056603e42919030981}{state}}
+\item 
+int \mbox{\hyperlink{structButton_afdc96173333da8df4b2f5e1728517f8b}{last\+State}}
+\item 
+Timer \mbox{\hyperlink{structButton_a514996eb05556045344b40a930343d6e}{debounce\+Timer}}
+\item 
+bool \mbox{\hyperlink{structButton_a5e7b737e832d3567e3bb1fa0b5064b76}{pressed}}
+\item 
+bool \mbox{\hyperlink{structButton_a6bd3192fa0d91b0e41b74e4d8c25c13c}{processed}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to hold buttons data. 
+
+It is used to avoid code repetition and to make the code more maintainable.
+
+The struct holds information of the digital pin of the button, the current state of the button (after the debounce filter), the last state of the button (that can or can\textquotesingle{}t be a rebound), the timer used for the debounce function, and some variables to know if the button was pressed and also processed (if the button was pressed we want to process that fact only once, no matter if the button is still pressed). 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structButton_a514996eb05556045344b40a930343d6e}\label{structButton_a514996eb05556045344b40a930343d6e}} 
+\index{Button@{Button}!debounceTimer@{debounceTimer}}
+\index{debounceTimer@{debounceTimer}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{debounceTimer}{debounceTimer}}
+{\footnotesize\ttfamily Timer Button\+::debounce\+Timer}
+
+Timer used for the debouncer. Each button has a timer \mbox{\Hypertarget{structButton_afdc96173333da8df4b2f5e1728517f8b}\label{structButton_afdc96173333da8df4b2f5e1728517f8b}} 
+\index{Button@{Button}!lastState@{lastState}}
+\index{lastState@{lastState}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{lastState}{lastState}}
+{\footnotesize\ttfamily int Button\+::last\+State}
+
+Last state used for the debounce function \mbox{\Hypertarget{structButton_a191b6e64f8845370d7b02ce0436b0b47}\label{structButton_a191b6e64f8845370d7b02ce0436b0b47}} 
+\index{Button@{Button}!pin@{pin}}
+\index{pin@{pin}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{pin}{pin}}
+{\footnotesize\ttfamily Digital\+In Button\+::pin}
+
+Digital pin used by the button \mbox{\Hypertarget{structButton_a5e7b737e832d3567e3bb1fa0b5064b76}\label{structButton_a5e7b737e832d3567e3bb1fa0b5064b76}} 
+\index{Button@{Button}!pressed@{pressed}}
+\index{pressed@{pressed}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{pressed}{pressed}}
+{\footnotesize\ttfamily bool Button\+::pressed}
+
+This attribute is used to know if the button was pressed \mbox{\Hypertarget{structButton_a6bd3192fa0d91b0e41b74e4d8c25c13c}\label{structButton_a6bd3192fa0d91b0e41b74e4d8c25c13c}} 
+\index{Button@{Button}!processed@{processed}}
+\index{processed@{processed}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{processed}{processed}}
+{\footnotesize\ttfamily bool Button\+::processed}
+
+This attribute is used to know if the button pressed was already processed \mbox{\Hypertarget{structButton_a5d20912c881b34056603e42919030981}\label{structButton_a5d20912c881b34056603e42919030981}} 
+\index{Button@{Button}!state@{state}}
+\index{state@{state}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{state}{state}}
+{\footnotesize\ttfamily int Button\+::state}
+
+State used for the debounce function 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{main_8cpp}{main.\+cpp}}\end{DoxyCompactItemize}

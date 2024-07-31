@@ -2,9 +2,9 @@
 .mbed
 projectfiles
 *.py*
-mbed-os
 BUILD
 
 compile_commands.json
 .clangd
 .cache
+mbed-os
